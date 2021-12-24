@@ -1,0 +1,5 @@
+Query:
+db.getCollection('office-products').distinct("review.score")
+
+Trajanje:
+0.143 sec

@@ -1,0 +1,5 @@
+Query:
+db.getCollection('office-products').find({"review.score": 1}, {"product.price": 1, "product.title": 1, "review.time": 1}).sort({"review.time": -1, _id: 1}).skip(10).limit(10)
+
+Time:
+0.105 sec

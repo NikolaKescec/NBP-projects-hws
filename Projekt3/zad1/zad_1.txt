@@ -1,0 +1,40 @@
+PITANJA:
+kako se zove,
+Ubačena kolekcija se zove: office-products
+
+kojeg formata su zapisi (stavite primjer jednog zapisa)
+Zapisi su sljedećeg formata:
+{
+    "_id" : ObjectId("61c623a4ab46be094ee82825"),
+    "product" : {
+        "productId" : "B000E7F8LA",
+        "title" : "Low Odor Dry Erase Markers, Vibrant DryGuard Ink, Bullet Tip, 4 Color Set (BON659504) Category: Dry Erase Markers",
+        "price" : "unknown"
+    },
+    "review" : {
+        "userId" : "A266N1TVOHUG8V",
+        "profileName" : "S. Young",
+        "helpfulness" : "0/0",
+        "score" : 4.0,
+        "time" : ISODate("2008-06-30T02:00:00.000Z"),
+        "summary" : "Boone Dry Erase Markers",
+        "text" : "I was really happy to find out that I was still able to purchase Boone dry erase markers from Amazon. They are no longer sold in the local stores and I find that I like them much better than the Expo markers because of the \"medium\" or \"bullet\" point option that was offered. Expo does not offer this option. Delivery was fast and efficient. Thanks Amazon!"
+    }
+}
+
+koliko ima zapisa u kolekciji
+Sveukupno ima 138084 zapisa u kolekciji.
+
+kolika je prosječna veličina zapisa
+Prosječna veličina zapisa je 786 bajta.
+
+koliko su veliki ukupni podataci (kolekcija) te
+Ukupni podaci su veliki 103.61 MB. (bez indeksa, samo podaci)
+
+koliko na disku zauzimaju
+Na disku zauzimaju sveukupno 57.43 MB. (bez indeksa, samo podaci)
+
+Vrijednosti nisu iste jer mongodb vrijednosti na disku čuva u kompresiranom formatu (koristi WiredTiger Storage engine koji podržava više načina kompresije.).
+
+
+

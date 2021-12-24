@@ -1,0 +1,5 @@
+Query:
+db.getCollection('office-products').find({"product.price": {$eq: "unknown"}}).count()
+
+Trajanje:
+0.101 sec
