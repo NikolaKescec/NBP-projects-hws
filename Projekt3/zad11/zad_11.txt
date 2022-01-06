@@ -1,0 +1,5 @@
+QUERY:
+db.products.find({"reviewStats.reviewsCount": {$gte: 200}, "reviewStats.avgReviewScore": {$gte: 4.5}, "reviewStats.price": {$lte: 20}, $text: {$search: "wonderful"}}).count()
+
+TIME:
+0.015 sec
