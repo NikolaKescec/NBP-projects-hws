@@ -1,4 +1,3 @@
-QUERY:
 {
   let map = function () {
     emit(this.product.productId, { prices: [this.product.price] });
@@ -40,6 +39,3 @@ QUERY:
 
   print("Finished!");
 }
-
-TIME:
-2.73 sec

@@ -1,0 +1,64 @@
+IDENTIFIKATORI KORISNIKA:
+A3OXHLG6DIBRW8 (56)
+AZ0OZGOYJA1N7 (1) - ima više korisnika koji su napisali recenziju pa nije jednoznačan rezultat
+
+PRETRAŽIVANJE BEZ INDEKSA
+Za A3OXHLG6DIBRW8 VRIJEME IZVOĐENJA: 0.088
+Za AZ0OZGOYJA1N7 VRIJEME IZVOĐENJA: 0.06
+
+PRETRAŽIVANJE S INDEKSOM
+Za A3OXHLG6DIBRW8 VRIJEME IZVOĐENJA: 0.008
+Za AZ0OZGOYJA1N7 VRIJEME IZVOĐENJA: 0.001
+
+ZAKLJUČAK:
+Napravimo li indeks nad odreženim atributom, tijekom pretrage podataka mongoDB koristi IXSCAN koji gleda predani opseg
+te ne skenira cijelu kolekciju, već samo traži za dobiveni opseg, što drastično ubrzava pretraživanje.
+
+QUERY:
+{
+  let map = function () {
+    this.reviews.forEach((review) => {
+      if (review.userId !== "unknown") {
+        emit(review.userId, { reviewCount: 1 });
+      }
+    });
+  };
+
+  let reduce = function (key, values) {
+    const reducedValue = { reviewCount: 0 };
+
+    values.forEach((value) => {
+      reducedValue.reviewCount += value.reviewCount;
+    });
+
+    return reducedValue;
+  };
+
+  db.products.mapReduce(map, reduce, {
+    out: "user_reviews",
+  });
+}
+
+// Korisnik s najviše reviewa: A3OXHLG6DIBRW8 (56)
+db.user_reviews.find().sort({ value: -1 }).limit(1);
+
+// Korisnik s najmanje reviewa: AZ0OZGOYJA1N7 (1)
+db.user_reviews.find().sort({ value: 1 }).limit(1);
+
+// Recenzije korisnika s najviše recenzija: VRIJEME IZVOĐENJA BEZ INDEKSA: 0.088
+db.products.find({reviews: {$elemMatch: {userId:'A3OXHLG6DIBRW8'}}})
+
+// Recenzije korisnika s najmanje recenzija: VRIJEME IZVOĐENJA BEZ INDEKSA: 0.06
+db.products.find({reviews: {$elemMatch: {userId:'AZ0OZGOYJA1N7'}}})
+
+// Stvaranje indeksa
+db.products.createIndex({"reviews.userId": 1})
+
+// Recenzije korisnika s najviše recenzija: VRIJEME IZVOĐENJA BEZ INDEKSA: 0.008
+db.products.find({reviews: {$elemMatch: {userId:'A3OXHLG6DIBRW8'}}})
+
+// Recenzije korisnika s najmanje recenzija: VRIJEME IZVOĐENJA BEZ INDEKSA: 0.001
+db.products.find({reviews: {$elemMatch: {userId:'AZ0OZGOYJA1N7'}}})
+
+// Obšanjenje pretraživanja uz pomoć indeksa.
+db.products.find({reviews: {$elemMatch: {userId:'A3OXHLG6DIBRW8'}}}).explain()

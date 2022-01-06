@@ -35,6 +35,3 @@ koliko na disku zauzimaju
 Na disku zauzimaju sveukupno 57.43 MB. (bez indeksa, samo podaci)
 
 Vrijednosti nisu iste jer mongodb vrijednosti na disku čuva u kompresiranom formatu (koristi WiredTiger Storage engine koji podržava više načina kompresije.).
-
-
-

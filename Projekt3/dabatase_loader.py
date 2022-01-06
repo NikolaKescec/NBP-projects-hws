@@ -1,7 +1,6 @@
 import os
 import re
 import pymongo
-import configparser
 import gzip
 
 from datetime import datetime

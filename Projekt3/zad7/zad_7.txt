@@ -1,0 +1,53 @@
+QUERY:
+{
+  let map = function () {
+    emit(this._id, { review_number: this.reviews.length });
+  };
+
+  let reduce = function (key, values) {
+    return values;
+  };
+
+  let finalize = function (key, reducedValues) {
+    return reducedValues[0].review_number;
+  };
+
+  db.products.mapReduce(map, reduce, {
+    out: "product_number",
+    finalize
+  });
+}
+
+// Najviše recenzija
+db.product_number.find().sort({ "value": -1 }).limit(10);
+// Najmanje recenzija
+db.product_number.find().sort({ "value": 1 }).limit(10);
+// Nepotrebna kolekcija nakon ispisa
+db.product_number.drop();
+
+ŠIFRE PROIZVODA S NAJVIŠE RECENZIJA:
+B000LYAX1G
+B0009WPKY0
+B00005NT9E
+B00001N2QU
+B000HVVSDU
+B000LYA8UW
+B000OOYECC
+B000I8ZULI
+B00069DKYI
+B000H6B4KM
+
+ŠIFRE PROIZVODA S NAJMANJE RECENZIJA:
+B0007USJ24
+B0008GOIWM
+B00006ICUI
+B00023CJL8
+B0008GM2AM
+B00083AYMI
+B000LFCJGM
+B0006BB7XC
+B0007CGBU4
+B0006OKJDS
+
+TIME (ukljucujuci mapReduce upit):
+(0.447+0.011+0.008+0.008) = 0.474 sec
