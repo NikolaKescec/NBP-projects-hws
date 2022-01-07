@@ -54,7 +54,6 @@ try:
     mongo_client = pymongo.MongoClient("mongodb://root:rootnmbp@localhost:27017")
     database = mongo_client["projekt3"]
 
-
     with os.scandir("data/") as entries:
         for entry in entries:
             m = re.match(r"(?P<category>.*).txt.gz", entry.name)
