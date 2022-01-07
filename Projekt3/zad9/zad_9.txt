@@ -3,12 +3,12 @@ A3OXHLG6DIBRW8 (56)
 AZ0OZGOYJA1N7 (1) - ima više korisnika koji su napisali recenziju pa nije jednoznačan rezultat
 
 PRETRAŽIVANJE BEZ INDEKSA
-Za A3OXHLG6DIBRW8 VRIJEME IZVOĐENJA: 0.088
-Za AZ0OZGOYJA1N7 VRIJEME IZVOĐENJA: 0.06
+Za A3OXHLG6DIBRW8 VRIJEME IZVOĐENJA: 0.064
+Za AZ0OZGOYJA1N7 VRIJEME IZVOĐENJA: 0.067
 
 PRETRAŽIVANJE S INDEKSOM
-Za A3OXHLG6DIBRW8 VRIJEME IZVOĐENJA: 0.008
-Za AZ0OZGOYJA1N7 VRIJEME IZVOĐENJA: 0.001
+Za A3OXHLG6DIBRW8 VRIJEME IZVOĐENJA: 0.007
+Za AZ0OZGOYJA1N7 VRIJEME IZVOĐENJA: 0.002
 
 ZAKLJUČAK:
 Napravimo li indeks nad odreženim atributom, tijekom pretrage podataka mongoDB koristi IXSCAN koji gleda predani opseg
@@ -45,20 +45,65 @@ db.user_reviews.find().sort({ value: -1 }).limit(1);
 // Korisnik s najmanje reviewa: AZ0OZGOYJA1N7 (1)
 db.user_reviews.find().sort({ value: 1 }).limit(1);
 
-// Recenzije korisnika s najviše recenzija: VRIJEME IZVOĐENJA BEZ INDEKSA: 0.088
-db.products.find({reviews: {$elemMatch: {userId:'A3OXHLG6DIBRW8'}}})
+// Recenzije korisnika s najviše recenzija: VRIJEME IZVOĐENJA BEZ INDEKSA: 0.064
+db.products.aggregate([
+    {$match: {'reviews.userId': 'A3OXHLG6DIBRW8'}},
+    {$project: {
+        reviews: {$filter: {
+            input: '$reviews',
+            as: 'review',
+            cond: {$eq: ['$$review.userId', 'A3OXHLG6DIBRW8']}
+        }},
+    }}
+])
 
-// Recenzije korisnika s najmanje recenzija: VRIJEME IZVOĐENJA BEZ INDEKSA: 0.06
-db.products.find({reviews: {$elemMatch: {userId:'AZ0OZGOYJA1N7'}}})
+// Recenzije korisnika s najmanje recenzija: VRIJEME IZVOĐENJA BEZ INDEKSA: 0.067
+db.products.aggregate([
+    {$match: {'reviews.userId': 'AZ0OZGOYJA1N7'}},
+    {$project: {
+        reviews: {$filter: {
+            input: '$reviews',
+            as: 'review',
+            cond: {$eq: ['$$review.userId', 'AZ0OZGOYJA1N7']}
+        }},
+    }}
+])
 
 // Stvaranje indeksa
 db.products.createIndex({"reviews.userId": 1})
 
-// Recenzije korisnika s najviše recenzija: VRIJEME IZVOĐENJA BEZ INDEKSA: 0.008
-db.products.find({reviews: {$elemMatch: {userId:'A3OXHLG6DIBRW8'}}})
+// Recenzije korisnika s najviše recenzija: VRIJEME IZVOĐENJA S INDEKSOM: 0.007
+db.products.aggregate([
+    {$match: {'reviews.userId': 'A3OXHLG6DIBRW8'}},
+    {$project: {
+        reviews: {$filter: {
+            input: '$reviews',
+            as: 'review',
+            cond: {$eq: ['$$review.userId', 'A3OXHLG6DIBRW8']}
+        }},
+    }}
+])
 
-// Recenzije korisnika s najmanje recenzija: VRIJEME IZVOĐENJA BEZ INDEKSA: 0.001
-db.products.find({reviews: {$elemMatch: {userId:'AZ0OZGOYJA1N7'}}})
+// Recenzije korisnika s najmanje recenzija: VRIJEME IZVOĐENJA S INDEKSOM: 0.002
+db.products.aggregate([
+    {$match: {'reviews.userId': 'AZ0OZGOYJA1N7'}},
+    {$project: {
+        reviews: {$filter: {
+            input: '$reviews',
+            as: 'review',
+            cond: {$eq: ['$$review.userId', 'AZ0OZGOYJA1N7']}
+        }},
+    }}
+])
 
 // Obšanjenje pretraživanja uz pomoć indeksa.
-db.products.find({reviews: {$elemMatch: {userId:'A3OXHLG6DIBRW8'}}}).explain()
+db.products.explain().aggregate([
+    {$match: {'reviews.userId': 'A3OXHLG6DIBRW8'}},
+    {$project: {
+        reviews: {$filter: {
+            input: '$reviews',
+            as: 'review',
+            cond: {$eq: ['$$review.userId', 'A3OXHLG6DIBRW8']}
+        }},
+    }}
+])

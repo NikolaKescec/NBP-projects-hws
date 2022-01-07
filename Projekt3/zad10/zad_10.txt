@@ -1,15 +1,24 @@
 VRIJEME IZVOĐENJA:
--bez indeksa pomoću regex operatora: 0.27
+-bez indeksa pomoću regex operatora: 0.287
 -s indeksom pomoću text operator koji koristi indeks nad specificiranim dijelovima kolekcije: 0.007
 
 Pretraživanje teksta pomoću indeksa drastično je brže zbog provedene tokenizacije i indeksiranja riječi unutar teksta.
 
 QUERY:
 // BEZ INDEKSA
-db.products.find({reviews: {$elemMatch: {$or: [{summary: {$regex: /.*pencil.*/i}}, {text: {$regex: /.*pencil.*/i}}]}}})
+db.products.aggregate([
+    {$match: {$or: [{"reviews.summary": /.*pencil.*/i}, {"reviews.text": /.*pencil.*/i}]}},
+    {$project: {
+        reviews: {$filter: {
+            input: '$reviews',
+            as: 'review',
+            cond: {$or: [{$regexMatch: { input: "$$review.summary", regex: ".*pencil.*", options: "i"}}, {$regexMatch: { input: "$$review.text", regex: ".*pencil.*", options: "i"}}]}
+        }},
+    }}
+])
 
 // STVARANJE INDEKSA
 db.products.createIndex({ "reviews.summary": "text", "reviews.text": "text" })
 
 // S INDEKSOM
-db.products.find({$text: {$search: "pencil"}}))
+db.products.find({$text: {$search: "pencil"}}, {reviews: 1})
