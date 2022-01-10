@@ -40,4 +40,4 @@ QUERY:
 }
 
 TIME: 
-14.3 sec
+13.2 sec

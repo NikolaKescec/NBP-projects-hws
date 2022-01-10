@@ -20,5 +20,8 @@ db.products.find().forEach((product) => {
   db.products.save(product);
 });
 
+// za svrhu slikanja rezultata, ne ubraja se u vrijeme izvođenja
+db.products.find()
+
 TIME:
-8.89
+8.89 sec

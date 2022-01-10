@@ -1,8 +1,8 @@
 PITANJA:
-kako se zove,
+-kako se zove:
 Ubačena kolekcija se zove: office-products
 
-kojeg formata su zapisi (stavite primjer jednog zapisa)
+-kojeg formata su zapisi (stavite primjer jednog zapisa):
 Zapisi su sljedećeg formata:
 {
     "_id" : ObjectId("61c623a4ab46be094ee82825"),
@@ -22,16 +22,17 @@ Zapisi su sljedećeg formata:
     }
 }
 
-koliko ima zapisa u kolekciji
+-koliko ima zapisa u kolekciji:
 Sveukupno ima 138084 zapisa u kolekciji.
 
-kolika je prosječna veličina zapisa
+-kolika je prosječna veličina zapisa:
 Prosječna veličina zapisa je 786 bajta.
 
-koliko su veliki ukupni podataci (kolekcija) te
+-koliko su veliki ukupni podataci (kolekcija):
 Ukupni podaci su veliki 103.61 MB. (bez indeksa, samo podaci)
 
-koliko na disku zauzimaju
+-koliko na disku zauzimaju:
 Na disku zauzimaju sveukupno 57.43 MB. (bez indeksa, samo podaci)
 
+Jesu li te zadnje vrijednosti iste i zašto?
 Vrijednosti nisu iste jer mongodb vrijednosti na disku čuva u kompresiranom formatu (koristi WiredTiger Storage engine koji podržava više načina kompresije.).
